@@ -1,4 +1,4 @@
-Vacations Tracker Project using React, React-Redux, NodeJS & Express and MySQL
+# Vacations Tracker Project using React, React-Redux, NodeJS & Express and MySQL
 
 Vacation Follow-Up system with two panels -
 

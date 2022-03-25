@@ -1,0 +1,89 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background: url("https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")
+    no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+#form-dialog-title {
+  text-align: center;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.register {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+.graph {
+  background-color: white;
+  margin-top: 25px;
+  height: 350px;
+}
+
+.login-container {
+  background-color: white;
+  border: 2px solid black;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.welcome {
+  text-align: center;
+}
+
+.vacations-container {
+  display: flex;
+}
+
+.vacations-title {
+  margin-top: 10%;
+}
+
+.single-vacation {
+  border: 2px solid black;
+}
+
+.vacation {
+  margin: 32px;
+  width: 300px;
+  position: relative;
+}
+
+.add-vacation-form {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 35px;
+  background-color: white;
+}
+
+.delete-icon {
+  position: absolute;
+  right: 0px;
+}
+
+.modal-btn-container {
+  display: flex;
+  justify-content: space-around;
+}

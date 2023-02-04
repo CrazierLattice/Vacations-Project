@@ -8,7 +8,7 @@ import {
   useHistory,
   Redirect,
 } from "react-router-dom";
-import { LOG_OUT, RESET_VACATIONS } from "./actions/actionsType";
+import actionTypes from "./actions/actionsType";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Vacations from "./components/Vacations";
@@ -109,11 +109,11 @@ const App = () => {
                     localStorage.clear();
                     dispatch(
                       {
-                        type: LOG_OUT,
+                        type: actionTypes.LOG_OUT,
                         payload: {},
                       },
                       {
-                        type: RESET_VACATIONS,
+                        type: actionTypes.RESET_VACATIONS,
                         payload: [],
                       }
                     );

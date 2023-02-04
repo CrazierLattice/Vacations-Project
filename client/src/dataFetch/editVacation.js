@@ -1,4 +1,4 @@
-import {EDIT_VACATION} from '../actions/actionsType'
+import actionTypes from '../actions/actionsType'
 
 //Edit vacation request
 export const editVacation = async (dispatch,id,token,description,location,starting_date,ending_date,price,image) => {
@@ -14,7 +14,7 @@ export const editVacation = async (dispatch,id,token,description,location,starti
     const data = await res.json()
     if (!data.error) {
         dispatch({
-            type:EDIT_VACATION,
+            type:actionTypes.EDIT_VACATION,
             payload:data
         })
     }

@@ -1,4 +1,4 @@
-import {GET_FOLLOWED_VACATIONS} from '../actions/actionsType'
+import actionTypes from '../actions/actionsType'
 export const fetchFollowedVacations = async (userId,dispatch,token) => {
 
     const res = await fetch(`https://caesaru-server.herokuapp.com/vacations/followedvacations/${userId}`,{
@@ -6,7 +6,7 @@ export const fetchFollowedVacations = async (userId,dispatch,token) => {
     })
     const data = await res.json()
     dispatch({
-        type:GET_FOLLOWED_VACATIONS,
+        type:actionTypes.GET_FOLLOWED_VACATIONS,
         payload:{followedVacations:data.followedVacations,unfollowedVacations:data.unfollowedVacations,likes:data.likesData}
     })
 

@@ -6,7 +6,7 @@ import { Input, Button, TextareaAutosize } from '@material-ui/core';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import {KeyboardDatePicker,MuiPickersUtilsProvider} from '@material-ui/pickers';
 import { postVacation } from '../../dataFetch/postVacation';
-import { DELETE_VACATION_MESSAGE } from '../../actions/actionsType';
+import actionTypes from '../../actions/actionsType';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 
@@ -29,7 +29,7 @@ const AddVacation = () => {
         if (role !== "admin" || !token )  return history.push('/')
         //Reset post message
         dispatch({
-            type:DELETE_VACATION_MESSAGE,
+            type:actionTypes.DELETE_VACATION_MESSAGE,
             payload:null
         })
     },[])

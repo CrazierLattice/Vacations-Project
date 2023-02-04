@@ -1,11 +1,11 @@
-import { LOG_IN_MESSAGES,CLEAR_LOG_IN_MESSAGES  } from "../actions/actionsType";
+import actionTypes from "../actions/actionsType";
 
 export default (state={},action) => {
     switch (action.type) {
-        case LOG_IN_MESSAGES:
+        case actionTypes.LOG_IN_MESSAGES:
             state = action.payload
             return state
-        case CLEAR_LOG_IN_MESSAGES:
+        case actionTypes.CLEAR_LOG_IN_MESSAGES:
             state = action.payload
             return state
         default:

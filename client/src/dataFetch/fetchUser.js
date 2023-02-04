@@ -1,4 +1,4 @@
-import {LOG_IN, LOG_IN_MESSAGES } from "../actions/actionsType"
+import actionTypes from "../actions/actionsType"
 
 export const HandleLogin = async(username,password,history,dispatch) => {
     const res = await fetch('https://caesaru-server.herokuapp.com/login', {
@@ -12,7 +12,7 @@ export const HandleLogin = async(username,password,history,dispatch) => {
     const  data = await res.json()
          if (data.user) {
             dispatch({
-                type:LOG_IN,
+                type:actionTypes.LOG_IN,
                 payload:{
                     user:data.user[0],
                     token:data.token
@@ -23,7 +23,7 @@ export const HandleLogin = async(username,password,history,dispatch) => {
         
         } else {
             dispatch({
-                type:LOG_IN_MESSAGES,
+                type:actionTypes.LOG_IN_MESSAGES,
                 payload:data
             })
         }

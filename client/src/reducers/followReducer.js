@@ -1,13 +1,13 @@
-import {GET_FOLLOWED_VACATIONS,RESET_VACATIONS} from '../actions/actionsType'
+import actionTypes from '../actions/actionsType'
 
 let oldState = []
 export default (newState = oldState , action) => {
     
     switch (action.type) {
-        case GET_FOLLOWED_VACATIONS:
+        case actionTypes.GET_FOLLOWED_VACATIONS:
             const {followedVacations,unfollowedVacations,likes} = action.payload
             return {...oldState , followedVacations,unfollowedVacations,likes}
-        case RESET_VACATIONS:    
+        case actionTypes.RESET_VACATIONS:    
             return oldState
         default:
             return newState

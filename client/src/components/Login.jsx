@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { HandleLogin } from "../dataFetch/fetchUser";
 import { Alert, AlertTitle } from "@material-ui/lab";
-import { CLEAR_LOG_IN_MESSAGES } from "../actions/actionsType";
+import actionTypes from "../actions/actionsType";
 const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const Login = () => {
 
   useEffect(() => {
     dispatch({
-      type: CLEAR_LOG_IN_MESSAGES,
+      type: actionTypes.CLEAR_LOG_IN_MESSAGES,
       payload: null,
     });
     if (token) history.push("/vacations");

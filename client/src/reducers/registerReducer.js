@@ -1,12 +1,12 @@
-import {REGISTER_USER,DELETE_REGISTER_USER_MESSAGE} from '../actions/actionsType'
+import actionTypes from '../actions/actionsType'
 
 
 export default  (state = {} , action) => {
     switch (action.type) {
-        case REGISTER_USER:
+        case actionTypes.REGISTER_USER:
             state = action.payload
             return state
-        case DELETE_REGISTER_USER_MESSAGE:
+        case actionTypes.DELETE_REGISTER_USER_MESSAGE:
             state = action.payload
             return state
                 default:

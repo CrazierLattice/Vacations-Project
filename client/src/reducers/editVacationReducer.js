@@ -1,8 +1,8 @@
-import {EDIT_VACATION} from '../actions/actionsType'
+import actionTypes from '../actions/actionsType'
 
 export default (state={},action) => {
     switch (action.type) {
-        case EDIT_VACATION:
+        case actionTypes.EDIT_VACATION:
             state = action.payload
             return state
         default:

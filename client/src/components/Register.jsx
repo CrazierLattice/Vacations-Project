@@ -3,10 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import { Link, useHistory } from "react-router-dom";
-import {
-  DELETE_REGISTER_USER_MESSAGE,
-  REGISTER_USER,
-} from "../actions/actionsType";
+import actionTypes from "../actions/actionsType";
 
 const Register = () => {
   const history = useHistory();
@@ -26,14 +23,14 @@ const Register = () => {
 
     const data = await res.json();
     dispatch({
-      type: REGISTER_USER,
+      type: actionTypes.REGISTER_USER,
       payload: data,
     });
   };
 
   useEffect(() => {
     dispatch({
-      type: DELETE_REGISTER_USER_MESSAGE,
+      type: actionTypes.DELETE_REGISTER_USER_MESSAGE,
       payload: null,
     });
     if (token) history.push("/vacations");

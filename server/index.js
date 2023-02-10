@@ -2,16 +2,18 @@
 const express = require('express');
 const app = express();
 const cors = require('cors')
+const Adapter = require('./dbconfig');
 require('dotenv').config()
 app.use(express.json());
 app.use(cors())
-
-const registerRoute = require('./routes/register')
-const loginRoute = require('./routes/login')
-const vacationsRoute = require('./routes/vacations')
-app.use('/register' ,registerRoute)
-app.use('/login' , loginRoute)
+const loginController = require('./controllers/LoginController');
+const registerController = require('./controllers/RegisterController');
+const vacationsRoute = require('./routes/vacations');
+Adapter.connectToDatabase();
+app.use('/register' ,registerController)
+app.use('/login' , loginController)
 app.use('/vacations' , vacationsRoute)
+
 
 
 app.get('/' , (req,res)=>res.status(200).send('Project is in progress'));

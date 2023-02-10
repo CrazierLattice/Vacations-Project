@@ -5,9 +5,9 @@ export const handleFollow = async (followerId, vacationId) =>{
 
         try{
 
-            const res = await fetch(`https://caesaru-server.herokuapp.com/vacations/put/${followerId}/${vacationId}` , {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/vacations/put/${followerId}/${vacationId}` , {
                 method:'PUT',
-                headers:{authorization:localStorage.getItem('token')}
+                headers:{authorization:localStorage.getItem('token')},
             })
             const data = await res.json();
             resolve({err:null,data:data});

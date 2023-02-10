@@ -2,7 +2,7 @@ import actionTypes from '../actions/actionsType'
 
 //Edit vacation request
 export const editVacation = async (dispatch,id,token,description,location,starting_date,ending_date,price,image) => {
-    const res = await fetch(`https://caesaru-server.herokuapp.com/vacations/edit/${id}` , {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/vacations/edit/${id}` , {
         method:'PUT',
         headers:{
          'Content-Type':'application/json',

@@ -1,46 +1,59 @@
 require('dotenv').config()
-const mysql = require('mysql');
-const db_config = {
-    host:process.env.DB_HOST,
-    user:process.env.DB_USER,
-    password:process.env.DB_PASSWORD,
-    database:process.env.DB_DATABASE
-}
+const mysql = require('mysql2');
 
-//Recursive function that handles when the server disconnects on production.
-function handleDisconnect() {
-    connection = mysql.createConnection(db_config);
-  
-    connection.connect(function (err) {
-      if (err) {
-        console.log("error when connecting to db:", err);
-        setTimeout(handleDisconnect, 2000);
-      }
-    });
-  
-    connection.on("error", function (err) {
-      console.log("db error", err);
-      if (err.code === "PROTOCOL_CONNECTION_LOST") {
-        handleDisconnect();
+  class Adapter {
+  static db_config = {
+    host:process.env.DB_HOST_LOCAL,
+    user:process.env.DB_USER_LOCAL,
+    database:process.env.DB_DATABASE_LOCAL
+}
+  static connectToDatabase = () => {
+    console.log('Attemping to connect to database');
+    const connection = mysql.createConnection(this.db_config);
+    connection.connect((error,a) => {
+      if (error) {
+        console.log(`Failed to connect to database, Error: ${error}, Attempting to reconnect.`);
+        setTimeout(this.connectToDatabase, 2000);
       } else {
-        throw err;
+        console.log(`Connected successfully, ${JSON.stringify(a)}`);
       }
-    });
+
+    })
+    return connection;
+  }
+  static handleDisconnect = (errorCode) => {
+    errorCode === "PROTOCOL_CONNECTION_LOST" ?? this.connectToDatabase()
   }
 
-  handleDisconnect();
+
+  static singleQuery = (queryString, values, callback) => {
+    console.log(values, callback);
+    const connection = this.connectToDatabase();
+    connection.query(queryString, values, (error, results) => {
+      if (error) {
+        console.log(`Error executing query: ${error}`);
+        callback(error, null);
+        return;
+      }
+      callback(null, results);
+      connection.end();
+    });
+  };
+
+
+}
   
 
-const Query = (q,...values) =>{
-    return new Promise((resolve,reject)=>{
-        connection.query(q,values,(err,results)=>{
-            if (err) {
-                reject(err)
-            } else {
-                resolve(results)
-            }
-        })
-    })
-}
+// const Query = (q,...values) =>{
+//     return new Promise((resolve,reject)=>{
+//         connection.query(q,values,(err,results)=>{
+//             if (err) {
+//                 reject(err)
+//             } else {
+//                 resolve(results)
+//             }
+//         })
+//     })
+// }
 
-module.exports = {connection,Query}
+module.exports = Adapter;

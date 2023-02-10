@@ -1,7 +1,9 @@
+import actionTypes from "../actions/actionsType"
+
 export const getTokenData =  async(dispatch,history) => {
     const token = localStorage.getItem('token')
     if (token) {
-      const data = await fetch('https://caesaru-server.herokuapp.com/login/refresh' , {
+      const data = await fetch(`${process.env.REACT_APP_API_URL}/login/refresh` , {
         method:'POST',
         headers:{
           'Content-Type':'application/json',
@@ -10,7 +12,7 @@ export const getTokenData =  async(dispatch,history) => {
       })
       const res = await data.json()
       dispatch({
-        type:"LOG_IN",
+        type:actionTypes.LOG_IN,
         payload:{
             user:res.data[0],
             token:token

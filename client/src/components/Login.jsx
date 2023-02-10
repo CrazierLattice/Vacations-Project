@@ -5,6 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import { HandleLogin } from "../dataFetch/fetchUser";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import actionTypes from "../actions/actionsType";
+
 const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();

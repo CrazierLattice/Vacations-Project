@@ -1,6 +1,6 @@
 import actionTypes from '../actions/actionsType'
 export const fetchVacations = async (dispatch,token) => {   
-        const res = await fetch('https://caesaru-server.herokuapp.com/vacations/all' , {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/vacations/all` , {
             headers:{authorization:token}
         })
         const data = await res.json()

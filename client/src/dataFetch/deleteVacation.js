@@ -1,7 +1,7 @@
 //Delete vacation request.
 export const deleteVacation = async(vacationId,token) => {
 
-    await fetch(`https://caesaru-server.herokuapp.com/vacations/delete/${vacationId}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/vacations/delete/${vacationId}`, {
         method:'DELETE',
         headers:{authorization:token}
     })

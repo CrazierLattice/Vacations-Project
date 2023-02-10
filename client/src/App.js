@@ -20,7 +20,6 @@ import { fetchVacations } from "./dataFetch/fetchVacations";
 import { fetchFollowedVacations } from "./dataFetch/fetchFollowedVacations";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-
 const App = () => {
   const user = useSelector((state) => state.user);
   const { token } = useSelector((state) => state.user);

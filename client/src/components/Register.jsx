@@ -15,7 +15,7 @@ const Register = () => {
   const dispatch = useDispatch();
 
   const handleRegistery = async () => {
-    const res = await fetch("https://caesaru-server.herokuapp.com/register", {
+    const res = await fetch("http://localhost:1000/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ firstName, lastName, username, password }),

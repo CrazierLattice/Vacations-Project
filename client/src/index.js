@@ -12,7 +12,8 @@ import editVacationReducer from "./reducers/editVacationReducer";
 import { combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
-
+import dotenv from 'dotenv'
+dotenv.config()
 let rootReducer = combineReducers({
   user,
   adminVacations,

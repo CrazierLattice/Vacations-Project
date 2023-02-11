@@ -110,14 +110,13 @@ router.put(
           .status(404)
           .json({ error: true, message: "Missing some info." });
       const select_vacation_q =
-        "SELECT * FROM followed_vacations WHERE follower_id=? AND vacation_id=?";
+        "SELECT * FROM followed_vacations WHERE follower_id=? AND vacation_id=? GROUP BY vacation_id";
       Adapter.singleQuery(
         select_vacation_q,
         [followerId, vacationId],
-        (error,
-        (results) => {
+        (error,results) => {
           if (results.length) {
-            if (vacation.length) {
+            if (results[0]['vacation_id'] == vacationId) {
               const unfollow_query = `DELETE FROM followed_vacations WHERE follower_id=? AND vacation_id=?`;
               Adapter.singleQuery(
                 unfollow_query,
@@ -127,29 +126,28 @@ router.put(
                     return res.status(201).json({
                       error: false,
                       message: "Vacation unfollowed successfully",
-                      data,
+                      data:results,
                     });
                   }
                 }
               );
-              //No matched vacation - therefore, follow it.
-            } else {
-              const follow_query = `INSERT INTO followed_vacations(follower_id,vacation_id) VALUES(?,?)`;
-              Adapter.singleQuery(
-                follow_query,
-                [followerId, vacationId],
-                (error, results) => {
-                  if (!error) {
-                    res.status(201).json({
-                      error: false,
-                      message: "Vacation followed successfully.",
-                    });
-                  }
+            } 
+          } else {
+            const follow_query = `INSERT INTO followed_vacations(follower_id,vacation_id) VALUES(?,?)`;
+            Adapter.singleQuery(
+              follow_query,
+              [followerId, vacationId],
+              (error, results) => {
+                if (!error) {
+                  res.status(201).json({
+                    error: false,
+                    message: "Vacation followed successfully.",
+                  });
                 }
-              );
-            }
+              }
+            );
           }
-        })
+        }
       );
     } catch (err) {
       console.log(err);
@@ -173,18 +171,18 @@ const followingVacations = [];
 const unfollowedVacations = [];
 let likesData = [];
 Adapter.singleQuery(query,userId,(error,results) => {
-  console.log(results);
   results.forEach(vacation => {
     vacation['Follow_status'] === 'Followed' ? followingVacations.push(vacation) : unfollowedVacations.push(vacation);
+    likesData.push({vacation_id:vacation.id,vacation_location:vacation.location,likes:vacation.likes});
   });
-  likesData = results;
+  return res.json({
+    error: false,
+    followedVacations:followingVacations,
+    unfollowedVacations,
+    likesData
+  });
+  
 })
-// return res.status(201).json({
-//   error: false,
-//   followedVacations:followingVacations,
-//   unfollowedVacations,
-//   likesData
-// });
 })
 
 // router.get(

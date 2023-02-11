@@ -28,8 +28,9 @@ class TokenVerification {
       jwt.verify(token, process.env.SECRET_CODE, (error, payload) => {
         if (error) {
           return res.status(401).json({ error: 500, message: error });
-        } else if (payload[0].role == this.USER) {
+        } else if (payload[0].role === this.USER) {
           next();
+          return;
         }
         res
           .status(405)

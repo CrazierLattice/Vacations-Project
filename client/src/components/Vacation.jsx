@@ -91,7 +91,7 @@ const Vacation = ({ vacation, update, setUpdate, likes }) => {
             >
               {likes?.likes || 0}{" "}
               <FavoriteSharpIcon
-                color={vacation["Followed_by"] ? "secondary" : ""}
+                color={vacation["Follow_status"] === 'Followed' ? "secondary" : ""}
               />
             </IconButton>
           )}

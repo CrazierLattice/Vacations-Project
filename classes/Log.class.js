@@ -3,8 +3,11 @@ const path = require("path");
 class Log {
   static logsDirectory = process.env.LOG_DIRECTORY;
 
-  static logData(file, functionName, text) {
+  static logData(file, functionName, text) {   
     const fs = require("fs");
+  if (!fs.existsSync(this.logsDirectory)) {
+  fs.mkdirSync(this.logsDirectory);
+    }
     const date = new Date();
     const dateString = date.toISOString().split("T")[0];
     const fullDateAndTime = date.toISOString().slice(0, 19).replace('T', ' ');

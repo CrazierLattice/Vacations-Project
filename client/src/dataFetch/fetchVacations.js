@@ -4,6 +4,7 @@ export const fetchVacations = async (dispatch,token) => {
             headers:{authorization:token}
         })
         const data = await res.json()
+        console.log(data);
         dispatch({
             type: actionTypes.GET_VACATIONS,
             payload:{

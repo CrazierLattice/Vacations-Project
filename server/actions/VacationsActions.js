@@ -3,6 +3,7 @@ const Vacation = require("../../classes/Vacation.class");
 const Adapter = require("../dbconfig");
 
 const getAllVacations = async (req, res) => {
+  console.log('hello');
   const select_q = `SELECT v.*,COUNT(follower_id) as followers
     FROM vacations v
     LEFT JOIN followed_vacations ON v.id = followed_vacations.vacation_id
@@ -11,14 +12,17 @@ const getAllVacations = async (req, res) => {
     Adapter.singleQuery(select_q, null, (error, results) => {
       let vacations = [];
       results.forEach((vacation) => {
-        vacation = {
-          ...vacation,
-          starting_date: Vacation.parseDate(vacation.starting_date),
-          ending_date: Vacation.parseDate(vacation.ending_date),
-        };
-        vacation = new Vacation(vacation);
-        vacations.push(vacation);
-      });
+        const {id,description,location,starting_date,ending_date,price,image,followers} = vacation;
+        vacations.push(
+          new Vacation(id,
+          description,
+          location,
+          Vacation.parseDate(starting_date), 
+          Vacation.parseDate(ending_date),
+           price,
+           image,
+           followers));
+      })
       res.status(201).json({ error: false, vacations });
       Log.logData(__filename, getAllVacations.name, "Vacations were fetched");
     });

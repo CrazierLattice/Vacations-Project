@@ -158,6 +158,35 @@ router.put(
 );
 
 //Get only  the vacations that a user follows after them
+
+router.get('/followedvacations/:userId',TokenVerification.userOnly,async(req,res)=>{
+  const {userId} = req.params;
+
+  const query = `SELECT vacations.*, COUNT(followed_vacations.follower_id) AS likes, 
+  CASE WHEN followed_vacations.follower_id = ? THEN 'Followed' ELSE 'Not Followed' END AS Follow_status
+FROM vacations
+LEFT JOIN followed_vacations
+ON vacations.id = followed_vacations.vacation_id
+GROUP BY vacations.id`
+
+const followingVacations = [];
+const unfollowedVacations = [];
+let likesData = [];
+Adapter.singleQuery(query,userId,(error,results) => {
+  console.log(results);
+  results.forEach(vacation => {
+    vacation['Follow_status'] === 'Followed' ? followingVacations.push(vacation) : unfollowedVacations.push(vacation);
+  });
+  likesData = results;
+})
+// return res.status(201).json({
+//   error: false,
+//   followedVacations:followingVacations,
+//   unfollowedVacations,
+//   likesData
+// });
+})
+
 // router.get(
 //   "/followedvacations/:userId",
 //   TokenVerification.userOnly,
@@ -168,10 +197,14 @@ router.put(
 //         return res
 //           .status(500)
 //           .json({ error: true, message: "Missing some info." });
-//       const select_followed_vacations_query = `SELECT vacations.*, users.first_name as Followed_by 
-//     FROM followed_vacations INNER JOIN vacations ON followed_vacations.vacation_id = vacations.id
-//     INNER JOIN users ON users.id = followed_vacations.follower_id WHERE users.id = ?`;
-//     Adapter.singleQuery(select_followed_vacations_query,[ select_followed_vacations_query,userId],(error,followedVacations) => {
+//       const select_followed_vacations_query = `SELECT vacations.*, users.first_name as Followed_by
+//       FROM vacations
+//       INNER JOIN followed_vacations
+//       ON vacations.id = followed_vacations.vacation_id
+//       INNER JOIN users
+//       ON users.id = followed_vacations.follower_id
+//       WHERE followed_vacations.follower_id = ?`;
+//     Adapter.singleQuery(select_followed_vacations_query,userId,(error,followedVacations) => {
 //         Adapter.singleQuery(select_followed_vacations_query,userId,(error,followedVacations) => {
 //           const followedVacationsIds = followedVacations
 //           .map((vacation) => vacation.id)

@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const { Query } = require("../dbconfig");
 const Adapter = require("../dbconfig");
 const TokenVerification = require("../../classes/VerifyToken.class");
 const Vacation = require("../../classes/Vacation.class");
@@ -123,10 +122,10 @@ router.put(
                 [followerId, vacationId],
                 (error, results) => {
                   if (!error) {
+                    console.log(results);
                     return res.status(201).json({
                       error: false,
                       message: "Vacation unfollowed successfully",
-                      data:results,
                     });
                   }
                 }
@@ -160,12 +159,16 @@ router.put(
 router.get('/followedvacations/:userId',TokenVerification.userOnly,async(req,res)=>{
   const {userId} = req.params;
 
-  const query = `SELECT vacations.*, COUNT(followed_vacations.follower_id) AS likes, 
-  CASE WHEN followed_vacations.follower_id = ? THEN 'Followed' ELSE 'Not Followed' END AS Follow_status
+  const query = `SELECT vacations.*, 
+  (CASE WHEN followed_vacations2.follower_id IS NOT NULL THEN 'Followed' ELSE 'Not Followed' END) AS Follow_status,
+  COUNT(followed_vacations.follower_id) AS likes
 FROM vacations
+LEFT JOIN followed_vacations AS followed_vacations2
+ON vacations.id = followed_vacations2.vacation_id AND followed_vacations2.follower_id = ?
 LEFT JOIN followed_vacations
 ON vacations.id = followed_vacations.vacation_id
-GROUP BY vacations.id`
+GROUP BY vacations.id
+`
 
 const followingVacations = [];
 const unfollowedVacations = [];
@@ -185,72 +188,6 @@ Adapter.singleQuery(query,userId,(error,results) => {
 })
 })
 
-// router.get(
-//   "/followedvacations/:userId",
-//   TokenVerification.userOnly,
-//   async (req, res) => {
-//     try {
-//       const { userId } = req.params;
-//       if (!userId)
-//         return res
-//           .status(500)
-//           .json({ error: true, message: "Missing some info." });
-//       const select_followed_vacations_query = `SELECT vacations.*, users.first_name as Followed_by
-//       FROM vacations
-//       INNER JOIN followed_vacations
-//       ON vacations.id = followed_vacations.vacation_id
-//       INNER JOIN users
-//       ON users.id = followed_vacations.follower_id
-//       WHERE followed_vacations.follower_id = ?`;
-//     Adapter.singleQuery(select_followed_vacations_query,userId,(error,followedVacations) => {
-//         Adapter.singleQuery(select_followed_vacations_query,userId,(error,followedVacations) => {
-//           const followedVacationsIds = followedVacations
-//           .map((vacation) => vacation.id)
-//           .join();
-//         let select_unfollowed_vacations_query = `SELECT * FROM vacations WHERE vacations.id NOT IN (${followedVacationsIds})`;
-  
-//         if (followedVacationsIds) {
-//           select_unfollowed_vacations_query = `SELECT * FROM vacations WHERE vacations.id NOT IN (${followedVacationsIds})`;
-//         } else {
-//           select_unfollowed_vacations_query = `SELECT * FROM vacations WHERE vacations.id`;
-//         }
-//         Adapter.singleQuery(select_unfollowed_vacations_query,null,(error,unfollowedVacations) => {
-//           let unfollowedVacationsIds = unfollowedVacations
-//           .map((vacation) => vacation.id)
-//           .join();
-//             //whereIN is  a dynamic variable that changes according to the vacations that the user follows them.
-//       let whereIN = "";
-//       if (followedVacationsIds) {
-//         if (unfollowedVacationsIds) {
-//           whereIN = `IN(${followedVacationsIds},${unfollowedVacationsIds})`;
-//         } else {
-//           whereIN = `IN(${followedVacationsIds})`;
-//         }
-//       } else {
-//         whereIN = `IN(${unfollowedVacationsIds})`;
-//       }
-
-//       const get_likes_q = `SELECT vacation_id,vacations.location, COUNT(follower_id) AS likes FROM followed_vacations 
-//     inner join vacations on vacations.id = followed_vacations.vacation_id
-//     WHERE vacation_id ${whereIN}
-//     GROUP BY followed_vacations.vacation_id`;
-//       Adapter.singleQuery(get_likes_q,null,(error,results) => {
-//         return res.status(201).json({
-//           error: false,
-//           followedVacations,
-//           unfollowedVacations: unfollowedVacations || [],
-//           likesData: results,
-//         });
-//       });
-//         });
-//         })
-//     })
-
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// );
 
 //Edit a vacation - admin only.
 router.put("/edit/:id", TokenVerification.adminOnly, async (req, res) => {

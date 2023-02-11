@@ -10,14 +10,10 @@ const {
 const router = require("express").Router();
 
 //Get all vacations
-router.get("/all", getAllVacations);
+router.get("/all",TokenVerification.everyUser, getAllVacations);
 
 //Get followers by vacation id
-router.get(
-  "/followers/:vacationId",
-  TokenVerification.everyUser,
-  getFollowersByVacationId
-);
+router.get("/followers/:vacationId",TokenVerification.everyUser,getFollowersByVacationId);
 
 // Create a new Vacation
 

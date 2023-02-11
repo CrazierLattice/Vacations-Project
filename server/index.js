@@ -8,11 +8,12 @@ app.use(express.json());
 app.use(cors())
 const loginController = require('./controllers/LoginController');
 const registerController = require('./controllers/RegisterController');
-const vacationsRoute = require('./routes/vacations');
+const vacationsController = require('./controllers/VacationsController')
+// const vacationsRoute = require('./routes/vacations');
 Adapter.connectToDatabase();
 app.use('/register' ,registerController)
 app.use('/login' , loginController)
-app.use('/vacations' , vacationsRoute)
+app.use('/vacations' , vacationsController)
 
 
 
